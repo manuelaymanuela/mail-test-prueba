@@ -30,6 +30,12 @@ class UsersController < ApplicationController
       if @user.save
         # Dile al mailer que envíe un correo de bienvenida después de guardar
         UserMailer.welcome_email(@user).deliver_now
+                                        # ó deliver-late
+        format.html { redirect_to @user, notice: 'Usuario correctamente creado.' }
+        format.json { render :show, status: :created, location: @user }
+      else
+        format.html { render :new }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
   end
